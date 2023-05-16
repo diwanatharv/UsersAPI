@@ -20,12 +20,10 @@ func Updateuser(reqBody models.User, key string) error {
 	keyInt, _ := strconv.Atoi(key)
 	filter := bson.M{"Id": keyInt}
 
-	// Create an update document to set the age of "Alice" to 30
-	update := bson.M{"$set": bson.M{"FirstName": reqBody.FirstName, "lastname": reqBody.LastName, "email": reqBody.Email, "businessType": reqBody.BuisnessType, "phoneNo": reqBody.PhoneNumber, "companyName": reqBody.Company, "country": reqBody.Country}}
+	update := bson.M{"$set": bson.M{"FirstName": reqBody.FirstName, "LastName": reqBody.LastName, "Company": reqBody.Company, "PhoneNumber": reqBody.PhoneNumber, "Email": reqBody.Email, "Country": reqBody.Country, "BuisnessType": reqBody.BuisnessType}}
 
-	// Create options to perform an upsert if "Alice" is not found
 	opts := options.FindOneAndUpdate().SetUpsert(true)
-
+	reqBody.Id = keyInt
 	// Perform the upsert
 	var result bson.M
 	err := db.FindOneAndUpdate(context.Background(), filter, update, opts).Decode(&result)
